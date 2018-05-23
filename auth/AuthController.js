@@ -18,7 +18,7 @@ var randtoken = require("rand-token");
 var refreshTokens = {};
 
 router.post("/token", function(req, res, next) {
-  var username = req.body.email;
+  var username = req.body.login;
   var refreshToken = req.body.refreshToken;
   if (
     refreshToken in refreshTokens &&
@@ -32,7 +32,7 @@ router.post("/token", function(req, res, next) {
     // var token = jwt.sign(user, SECRET, { expiresIn: 300 });
     // res.json({ token: "JWT " + token });
 
-    User.findOne({ email: req.body.email }, function(err, user) {
+    User.findOne({ login: req.body.login }, function(err, user) {
       if (err) return res.status(500).send("Error on the server.");
       if (!user) return res.status(404).send("No user found.");
 
@@ -43,7 +43,7 @@ router.post("/token", function(req, res, next) {
       });
 
       var refreshToken = randtoken.uid(256);
-      refreshTokens[refreshToken] = req.body.email;
+      refreshTokens[refreshToken] = req.body.login;
       // return the information including token as JSON
       res
         .status(200)
@@ -55,7 +55,8 @@ router.post("/token", function(req, res, next) {
 });
 
 router.post("/login", function(req, res) {
-  User.findOne({ email: req.body.email }, function(err, user) {
+  console.log(req.body);
+  User.findOne({ login: req.body.login }, function(err, user) {
     if (err) return res.status(500).send("Error on the server.");
     if (!user) return res.status(404).send("No user found.");
 
@@ -71,7 +72,7 @@ router.post("/login", function(req, res) {
     });
 
     var refreshToken = randtoken.uid(256);
-    refreshTokens[refreshToken] = req.body.email;
+    refreshTokens[refreshToken] = req.body.login;
     // return the information including token as JSON
     res
       .status(200)
@@ -89,7 +90,7 @@ router.post("/register", function(req, res) {
   User.create(
     {
       name: req.body.name,
-      email: req.body.email,
+      login: req.body.login,
       password: hashedPassword
     },
     function(err, user) {
