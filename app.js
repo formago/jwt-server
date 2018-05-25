@@ -16,6 +16,9 @@ app.get("/api", function(req, res) {
 var UserController = require(__root + "user/UserController");
 app.use("/api/users", UserController);
 
+var MenuController = require(__root + "menu/MenuController");
+app.use("/api/menu", MenuController);
+
 var AuthController = require(__root + "auth/AuthController");
 app.use("/api/auth", AuthController);
 
