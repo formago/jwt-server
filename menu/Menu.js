@@ -4,7 +4,8 @@ var MenuSchema = new mongoose.Schema({
     menuId: String,
     parentMenuId: String,
     menuName: String,
-    url: String
+    url: String,
+    childList: Array
 });
 mongoose.model('Menu', MenuSchema);
 
